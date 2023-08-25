@@ -18,25 +18,31 @@ function CommitHistory() {
 
     useEffect(() => {
         fetch(`/api/commits`)
-            .then(response => response.json())
-            .then(data => setCommits(data))
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Fetched data:', data);
+                setCommits(data);
+            })
             .catch(error => console.log(error));
     }, []);
 
     useEffect(() => {
-        
-        
-             fetch(`api/commits?search=${searchTerm}`)
+
+
+        fetch(`/api/commits?search=${searchTerm}`)
             .then(response => response.json())
             .then(data => setCommits(data))
             .catch(error => console.log(error));
     }, [searchTerm]);
 
-    
-    
+
+
     const handleSearch = () => {
         // Fetch commits based on searchTerm
-        fetch(`api/commits?search=${searchTerm}`)
+        fetch(`/api/commits?search=${searchTerm}`)
             .then(response => response.json())
             .then(data => setCommits(data))
             .catch(error => console.log(error));
@@ -44,7 +50,7 @@ function CommitHistory() {
 
     return (
         <div className="bg-gray-100 p-4 rounded shadow">
-                        <div className="flex mb-4">
+            <div className="flex mb-4">
                 <input
                     type="text"
                     placeholder="Search commits..."
@@ -62,21 +68,21 @@ function CommitHistory() {
             <ul className="divide-y divide-gray-300">
                 {commits.map(commit => (
                     <li key={commit.sha} className="py-3">
-                    <div className="flex items-center">
-                        <div className="w-12 h-12 flex-shrink-0 bg-blue-500 rounded-full flex items-center justify-center">
-                            
+                        <div className="flex items-center">
+                            <div className="w-12 h-12 flex-shrink-0 bg-blue-500 rounded-full flex items-center justify-center">
+
+                            </div>
+                            <div className="ml-4">
+                                <p className="text-lg font-semibold text-blue-600">{commit.commit.author.name}</p>
+                                <p className="text-sm text-gray-500">{commit.commit.author.date}</p>
+                                <p className="text-gray-700">{commit.commit.message}</p>
+                            </div>
                         </div>
-                        <div className="ml-4">
-                            <p className="text-lg font-semibold text-blue-600">{commit.commit.author.name}</p>
-                            <p className="text-sm text-gray-500">{commit.commit.author.date}</p>
-                            <p className="text-gray-700">{commit.commit.message}</p>
-                        </div>
-                    </div>
-                </li>
+                    </li>
                 ))}
             </ul>
         </div>
-        
+
     );
 }
 
