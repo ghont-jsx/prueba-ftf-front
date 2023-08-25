@@ -19,11 +19,11 @@ function CommitHistory() {
     useEffect(() => {
         fetch(`/api/commits`)
             .then(response => {
-                console.log('Response status:', response.status);
+                
                 return response.json();
             })
             .then(data => {
-                console.log('Fetched data:', data);
+                
                 setCommits(data);
             })
             .catch(error => console.log(error));
